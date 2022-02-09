@@ -1,5 +1,5 @@
 <template>
-  <HelloWorld msg="Welcome to Vue 3 App" />
+  <HelloWorld />
 </template>
 
 <script lang="ts">
