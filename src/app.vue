@@ -1,14 +1,14 @@
 <template>
-  <HelloWorld msg="Welcome to Vue 3 App" />
+  <BaseLabel>Hello World</BaseLabel>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import HelloWorld from "./components/hello-world/index.vue";
+import BaseLabel from "./components/base-label/index.vue";
 
 @Options({
   components: {
-    HelloWorld,
+    BaseLabel,
   },
 })
 export default class App extends Vue {}
