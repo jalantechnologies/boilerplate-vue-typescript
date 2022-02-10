@@ -1,4 +1,6 @@
 import { createApp } from "vue";
 import App from "./app.vue";
 
-createApp(App).mount("#app");
+import Argon from "./plugins/argon-kit";
+
+createApp(App).use(Argon).mount("#app");
