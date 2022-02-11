@@ -1,4 +1,4 @@
-# Vue Transcript
+# Vue Typescript
 
 ## Project setup
 
@@ -6,7 +6,7 @@
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+### Compiles and hot-reloads for development / Opens Storybook
 
 ```
 yarn serve
