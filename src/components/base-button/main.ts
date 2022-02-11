@@ -1,87 +1,102 @@
-import { computed, reactive } from "vue";
+import { computed, reactive, PropType, SetupContext } from "vue";
+
+interface BaseButtonProps {
+  tag?: string;
+  type?: string;
+  size?: string;
+  textColor?: string;
+  nativeType?: string;
+  icon?: string;
+  text?: string;
+  outline?: boolean;
+  rounded?: boolean;
+  iconOnly?: boolean;
+  block?: boolean;
+}
 
 export default {
-  name: "base-button",
+  name: "BaseButton",
   props: {
     tag: {
-      type: String,
+      type: String as PropType<BaseButtonProps>,
       default: "button",
       description: "Button tag (default -> button)",
     },
     type: {
-      type: String,
+      type: String as PropType<BaseButtonProps>,
       default: "default",
       description: "Button type (e,g primary, danger etc)",
     },
     size: {
-      type: String,
+      type: String as PropType<BaseButtonProps>,
       default: "",
       description: "Button size lg|sm",
     },
     textColor: {
-      type: String,
+      type: String as PropType<BaseButtonProps>,
       default: "",
       description: "Button text color (e.g primary, danger etc)",
     },
     nativeType: {
-      type: String,
+      type: String as PropType<BaseButtonProps>,
       default: "button",
       description: "Button native type (e.g submit,button etc)",
     },
     icon: {
-      type: String,
+      type: String as PropType<BaseButtonProps>,
       default: "",
       description: "Button icon",
     },
     text: {
-      type: String,
+      type: String as PropType<BaseButtonProps>,
       default: "",
       description: "Button text in case not provided via default slot",
     },
     outline: {
-      type: Boolean,
+      type: Boolean as PropType<BaseButtonProps>,
       default: false,
       description: "Whether button style is outline",
     },
     rounded: {
-      type: Boolean,
+      type: Boolean as PropType<BaseButtonProps>,
       default: false,
       description: "Whether button style is rounded",
     },
     iconOnly: {
-      type: Boolean,
+      type: Boolean as PropType<BaseButtonProps>,
       default: false,
       description: "Whether button contains only an icon",
     },
     block: {
-      type: Boolean,
+      type: Boolean as PropType<BaseButtonProps>,
       default: false,
       description: "Whether button is of block type",
     },
   },
-  setup(props: any) {
+  emits: ["click"],
+  setup(props: BaseButtonProps, { emit, slots }: SetupContext) {
     props = reactive(props);
-
-    const btnClasses = computed(() => {
+    const classes = computed(() => {
       return {
         "btn-block": props.block,
         "rounded-circle": props.rounded,
         "btn-icon-only": props.iconOnly,
         [`text-${props.textColor}`]: props.textColor,
-        "btn-icon": props.icon || props.$slots.icon,
-        [`btn-${props.type}`]: props.type && !props.outline,
+        "btn-icon": props.icon || slots.icon,
+        [`btn-${props.type}`]: props.type,
         [`btn-outline-${props.type}`]: props.outline,
         [`btn-${props.size}`]: props.size,
       };
     });
 
-    const handleClick = (evt: any) => {
-      props.$emit("click", evt);
+    const handleClick = (evt: MouseEvent) => {
+      emit("click", evt);
     };
 
     return {
-      btnClasses,
+      classes,
       handleClick,
+      slots,
     };
   },
 };

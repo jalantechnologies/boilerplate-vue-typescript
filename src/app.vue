@@ -1,6 +1,8 @@
 <template>
-  <BaseLabel>Hello World</BaseLabel>
-  <BaseButton type="default" class="my-4">Sign In</BaseButton>
+  <div class="flex-col d-flex flex-column align-items-center">
+    <BaseLabel>Hello World</BaseLabel>
+    <BaseButton class="btn-1" type="primary">Primary</BaseButton>
+  </div>
 </template>
 
 <script lang="ts">
