@@ -1,0 +1,14 @@
+{
+  "reporter": "cypress-mochawesome-reporter",
+  "reporterOptions": {
+    "reportDir": "tests/e2e/reports"
+  },
+  "baseUrl": "http://localhost:8080",
+  "pluginsFile": "tests/e2e/plugins/index.js",
+  "experimentalStudio": true,
+  "viewportHeight":720,
+  "viewportWidth":1280,
+  "waitForAnimations": true,
+  "screenshotOnRunFailure": true,
+  "trashAssetsBeforeRuns": true
+}
