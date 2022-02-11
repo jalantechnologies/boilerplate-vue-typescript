@@ -7,10 +7,12 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import BaseLabel from "./components/base-label/index.vue";
+import BaseInput from "./components/base-input/index.vue";
 
 @Options({
   components: {
     BaseLabel,
+    BaseInput,
   },
 })
 export default class App extends Vue {}
