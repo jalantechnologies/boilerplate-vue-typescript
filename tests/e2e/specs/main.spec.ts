@@ -3,6 +3,6 @@
 describe('Landing page',() => {
   it('Hellow world',()=>{
     cy.visit('/')
-    cy.contains('Hello world')
+    cy.contains('Hello World')
   })
 })
