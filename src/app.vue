@@ -1,7 +1,6 @@
 <template>
   <div class="flex-col d-flex flex-column align-items-center">
     <BaseLabel>Hello World</BaseLabel>
-    <BaseButton class="btn-1" type="primary">Hello World</BaseButton>
   </div>
 </template>
 
