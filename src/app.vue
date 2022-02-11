@@ -1,14 +1,17 @@
 <template>
   <BaseLabel>Hello World</BaseLabel>
+  <BaseButton type="default" class="my-4">Sign In</BaseButton>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import BaseLabel from "./components/base-label/index.vue";
+import BaseButton from "./components/base-button/index.vue";
 
 @Options({
   components: {
     BaseLabel,
+    BaseButton,
   },
 })
 export default class App extends Vue {}
