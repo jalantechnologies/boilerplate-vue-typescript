@@ -1,5 +1,7 @@
 <template>
-  <BaseLabel>Hello World</BaseLabel>
+  <div class="flex-col d-flex flex-column align-items-center">
+    <BaseLabel>Hello World</BaseLabel>
+  </div>
 </template>
 
 <script lang="ts">
