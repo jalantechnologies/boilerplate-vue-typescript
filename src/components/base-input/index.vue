@@ -2,7 +2,6 @@
   <div
     class="form-group"
     :class="[
-      { 'input-group': hasIcon },
       { 'has-danger': error },
       { focused: focused },
       { 'input-group-alternative': alternative },
@@ -18,43 +17,24 @@
       </label>
     </slot>
 
-    <div v-if="addonLeftIcon || $slots.addonLeft" class="input-group-prepend">
-      <span class="input-group-text">
-        <slot name="addonLeft">
-          <i :class="addonLeftIcon"></i>
-        </slot>
-      </span>
-    </div>
-    <slot v-bind="slotData">
-      <input
-        :value="value"
-        v-on="listeners"
-        v-bind="$attrs"
-        class="form-control"
-        :class="[
-          { 'is-valid': valid === true },
-          { 'is-invalid': valid === false },
-          inputClasses,
-        ]"
-        aria-describedby="addon-right addon-left"
-        @input="updateValue"
-        @focus="onFocus"
-        @blur="onBlur"
-      />
-    </slot>
-    <div v-if="addonRightIcon || $slots.addonRight" class="input-group-append">
-      <span class="input-group-text">
-        <slot name="addonRight">
-          <i :class="addonRightIcon"></i>
-        </slot>
-      </span>
-    </div>
+    <input
+      :value="value"
+      v-bind="$attrs"
+      class="form-control"
+      :class="[
+        { 'is-valid': valid === true },
+        { 'is-invalid': valid === false },
+        inputClasses,
+      ]"
+      @input="updateValue"
+      @focus="onFocus"
+      @blur="onBlur"
+    />
     <slot name="infoBlock"></slot>
     <slot name="helpBlock">
       <div
         class="text-danger invalid-feedback"
         style="display: block"
-        :class="{ 'mt-2': hasIcon }"
         v-if="error"
       >
         {{ error }}
