@@ -1,13 +1,14 @@
 import { PropType, ref, SetupContext } from "vue";
 
 interface BaseInputProps {
+  alternative?: boolean;
+  error?: string;
+  showError?: boolean;
+  inputClasses?: string;
+  label?: string;
+  labelClasses?: string;
   required?: boolean;
   valid?: boolean;
-  alternative?: boolean;
-  label?: string;
-  error?: string;
-  labelClasses?: string;
-  inputClasses?: string;
   value?: [string, number];
 }
 
@@ -47,6 +48,10 @@ export default {
     value: {
       type: [String, Number] as PropType<BaseInputProps>,
       description: "Input value",
+    },
+    showError: {
+      type: Boolean as PropType<BaseInputProps>,
+      description: "Show error message and indicator",
     },
   },
   setup(props: any, { emit }: SetupContext) {

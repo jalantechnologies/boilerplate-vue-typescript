@@ -1,16 +1,14 @@
 <template>
-  <div class="flex-col d-flex flex-column align-items-center">
-    <BaseLabel>Hello World</BaseLabel>
-  </div>
+  <SignUp />
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import BaseLabel from "./components/base-label/index.vue";
+import SignUp from "./views/sign-up/index.vue";
 
 @Options({
   components: {
-    BaseLabel,
+    SignUp,
   },
 })
 export default class App extends Vue {}

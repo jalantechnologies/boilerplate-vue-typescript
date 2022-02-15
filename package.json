@@ -10,6 +10,8 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "@vuelidate/core": "^2.0.0-alpha.34",
+    "@vuelidate/validators": "^2.0.0-alpha.26",
     "core-js": "^3.6.5",
     "sass-resources-loader": "^2.2.4",
     "vue": "^3.0.0",
