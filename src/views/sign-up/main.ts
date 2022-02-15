@@ -6,6 +6,7 @@ import useVuelidate from "@vuelidate/core";
 import { required, email, minLength, sameAs } from "@vuelidate/validators";
 import { User } from "@/types/interface";
 import { ScreenState } from "@/types/enums";
+import { mapActions, mapGetters } from "vuex";
 
 export default defineComponent({
   name: "SignUp",
@@ -22,17 +23,20 @@ export default defineComponent({
       password: "",
       confirmPassword: "",
     });
-    const state = ref<ScreenState>(ScreenState.DEFAULT);
+    const submitButtonState = ref<ScreenState>(ScreenState.DEFAULT);
     return {
       user,
       v$: useVuelidate(),
-      state,
       ScreenState,
+      submitButtonState,
     };
   },
+  computed: {
+    ...mapGetters("account", { state: "status" }),
+  },
   methods: {
+    ...mapActions("account", ["register"]),
     updateUser(value: string, id: string) {
-      console.log(value, id);
       switch (id) {
         case "firstName":
           this.user.firstName = value;
@@ -51,14 +55,19 @@ export default defineComponent({
           break;
       }
     },
-    registerUser() {
-      this.state = ScreenState.LOADING;
+    async registerUser() {
+      this.submitButtonState = ScreenState.LOADED;
       this.v$.$touch();
       if (this.v$.$invalid) {
         return false;
       }
-      alert("Done!");
-      this.state = ScreenState.LOADED;
+      const data = await this.register(this.user);
+      if (this.state == ScreenState.LOADED) {
+        alert(`Successfully Signed Up!`);
+      }
+      if (this.state == ScreenState.ERROR) {
+        alert(`Error response ${data.error}`);
+      }
       return true;
     },
   },
