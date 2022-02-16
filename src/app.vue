@@ -1,14 +1,18 @@
 <template>
-  <SignUp />
+  <router-view />
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import SignUp from "./views/sign-up/index.vue";
+import { Routes } from "@/router/routes";
 
 @Options({
   components: {
     SignUp,
+  },
+  data() {
+    return { Routes };
   },
 })
 export default class App extends Vue {}

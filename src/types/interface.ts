@@ -5,3 +5,8 @@ export type User = {
   lastName: string;
   password: string;
 };
+
+export type LoginUserDetail = {
+  email: string;
+  password: string;
+};
