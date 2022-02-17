@@ -27,3 +27,13 @@ it("should not emit click when button is disabled", () => {
   wrapper.find("button").trigger("click");
   expect(wrapper.emitted("click")).toBeUndefined();
 });
+
+it("should show icon if passed", () => {
+  const wrapper = shallowMount(BaseButton, {
+    props: {
+      icon: "fa fa-twitter",
+    },
+  });
+  wrapper.find("icon");
+  expect(wrapper.exists()).toBeTruthy();
+});

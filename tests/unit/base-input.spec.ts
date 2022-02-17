@@ -84,4 +84,24 @@ describe("BaseInput.vue", () => {
     wrapper.find("infoBlock");
     expect(wrapper.text()).toBe("test");
   });
+
+  it("should show add right icon if passed", () => {
+    const wrapper = shallowMount(BaseInput, {
+      props: {
+        addonRightIcon: "ni ni-lock-circle-open",
+      },
+    });
+    wrapper.find("addonRightIcon");
+    expect(wrapper.exists()).toBeTruthy();
+  });
+
+  it("should show add left icon if passed", () => {
+    const wrapper = shallowMount(BaseInput, {
+      props: {
+        addonLeftIcon: "ni ni-lock-circle-open",
+      },
+    });
+    wrapper.find("addonLeftIcon");
+    expect(wrapper.exists()).toBeTruthy();
+  });
 });
