@@ -49,3 +49,8 @@ export const RoundedButton = Template.bind({});
 RoundedButton.args = {
   rounded: true,
 };
+
+export const ButtonWithIcon = Template.bind({});
+ButtonWithIcon.args = {
+  icon: "fa fa-twitter",
+};

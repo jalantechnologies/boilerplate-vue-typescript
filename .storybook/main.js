@@ -14,6 +14,14 @@ module.exports = {
           loader: require.resolve("sass-resources-loader"),
           options: {
             resources: path.resolve(__dirname, "../src/assets/scss/main.scss"),
+            resources: path.resolve(
+              __dirname,
+              "../src/assets/vendor/font-awesome/css/font-awesome.css"
+            ),
+            resources: path.resolve(
+              __dirname,
+              "../src/assets/vendor/nucleo/css/nucleo.css"
+            ),
           },
         },
       ],

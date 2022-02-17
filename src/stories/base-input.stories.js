@@ -45,3 +45,8 @@ export const ValuedInput = Template.bind({});
 ValuedInput.args = {
   value: "This is the value.",
 };
+
+export const IconInput = Template.bind({});
+IconInput.args = {
+  addonRightIcon: "ni ni-lock-circle-open",
+};

@@ -2,6 +2,7 @@
   <div
     class="form-group"
     :class="[
+      { 'input-group': hasIcon },
       { 'has-danger': error },
       { focused: focused },
       { 'input-group-alternative': alternative },
@@ -16,7 +17,13 @@
         <span v-if="required">*</span>
       </label>
     </slot>
-
+    <div v-if="addonLeftIcon || $slots.addonLeft" class="input-group-prepend">
+      <span class="input-group-text">
+        <slot name="addonLeft">
+          <i :class="addonLeftIcon"></i>
+        </slot>
+      </span>
+    </div>
     <input
       :value="value"
       v-bind="$attrs"
@@ -30,6 +37,13 @@
       @focus="onFocus"
       @blur="onBlur"
     />
+    <div v-if="addonRightIcon || $slots.addonRight" class="input-group-append">
+      <span class="input-group-text">
+        <slot name="addonRight">
+          <i :class="addonRightIcon"></i>
+        </slot>
+      </span>
+    </div>
     <slot name="infoBlock"></slot>
     <slot name="helpBlock">
       <div

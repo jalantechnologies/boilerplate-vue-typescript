@@ -1,4 +1,4 @@
-import { PropType, ref, SetupContext } from "vue";
+import { computed, PropType, ref, SetupContext } from "vue";
 
 interface BaseInputProps {
   required?: boolean;
@@ -48,6 +48,14 @@ export default {
       type: [String, Number] as PropType<BaseInputProps>,
       description: "Input value",
     },
+    addonRightIcon: {
+      type: String,
+      description: "Addon right icon",
+    },
+    addonLeftIcon: {
+      type: String,
+      description: "Addont left icon",
+    },
   },
   setup(props: any, { emit }: SetupContext) {
     let focused = ref<boolean>(false);
@@ -63,6 +71,11 @@ export default {
       focused = ref(false);
       emit("blur", value);
     };
+    const hasIcon = computed(() => {
+      return (
+        props.addonRightIcon !== undefined || props.addonLeftIcon !== undefined
+      );
+    });
 
     return {
       focused,
@@ -70,6 +83,7 @@ export default {
       updateValue,
       onBlur,
       props,
+      hasIcon,
     };
   },
   emits: ["input", "focus", "blur"],
