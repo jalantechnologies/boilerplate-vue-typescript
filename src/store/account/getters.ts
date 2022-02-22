@@ -1,5 +1,5 @@
 import { AccountStateType } from "@/store/account/state";
-import { Account } from "@/models";
+import { Account, ValidationFailure } from "@/models";
 import { ScreenState } from "@/types";
 
 const getters = {
@@ -8,5 +8,7 @@ const getters = {
   },
   isLoggedIn: (state: AccountStateType): boolean => state.isLoggedIn,
   status: (state: AccountStateType): ScreenState => state.status,
+  error: (state: AccountStateType): string | undefined => state.error,
+  validationFailures: (state: AccountStateType): ValidationFailure[] | undefined => state.validationFailures
 };
 export default getters;

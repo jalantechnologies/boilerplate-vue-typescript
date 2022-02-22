@@ -10,3 +10,8 @@ export enum AlertType {
   ALERT_SUCCESS = "ALERT_SUCCESS",
   ALERT_ERROR = "ALERT_ERROR",
 }
+
+export enum HTTP_STATUS_CODE {
+  BAD_REQUEST = 400,
+  CONFLICT_REQUEST = 409
+}

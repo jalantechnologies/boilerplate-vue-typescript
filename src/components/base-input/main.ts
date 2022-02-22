@@ -1,6 +1,9 @@
-import { computed, PropType, ref, SetupContext } from "vue";
+import { ValidationFailure } from "../../models";
+import { computed, ComputedRef, PropType, Ref, ref, SetupContext } from "vue";
 
 interface BaseInputProps {
+  addonRightIcon?: string;
+  addonLeftIcon?: string;
   alternative?: boolean;
   error?: string;
   showError?: boolean;
@@ -49,22 +52,39 @@ export default {
       type: [String, Number] as PropType<BaseInputProps>,
       description: "Input value",
     },
+    addonRightIcon: {
+      type: String,
+      description: "Addon right icon",
+    },
+    addonLeftIcon: {
+      type: String,
+      description: "Addont left icon",
+    },
     showError: {
       type: Boolean as PropType<BaseInputProps>,
       description: "Show error message and indicator",
     },
+    validationFailure: {
+      type: ValidationFailure as PropType<BaseInputProps>
+    }
   },
-  setup(props: any, { emit }: SetupContext) {
+  setup(props: BaseInputProps, { emit }: SetupContext): {
+    focused: Ref<boolean>;
+    onFocus: (value: string) => void,
+    updateValue: (evt: { target: { value: string } }) => void,
+    onBlur: (value: string) => void,
+    hasIcon: ComputedRef<boolean>
+  } {
     let focused = ref<boolean>(false);
-    const updateValue = (evt: { target: { value: any } }) => {
+    const updateValue = (evt: { target: { value: string } }) => {
       const value = evt.target.value;
       emit("input", value);
     };
-    const onFocus = (value: any) => {
+    const onFocus = (value: string) => {
       focused = ref(true);
       emit("focus", value);
     };
-    const onBlur = (value: any) => {
+    const onBlur = (value: string) => {
       focused = ref(false);
       emit("blur", value);
     };
@@ -79,7 +99,6 @@ export default {
       onFocus,
       updateValue,
       onBlur,
-      props,
       hasIcon,
     };
   },

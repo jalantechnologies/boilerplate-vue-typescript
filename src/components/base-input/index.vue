@@ -1,15 +1,14 @@
 <template>
   <div
-    class="form-group"
+    class="form-group d-flex"
     :class="[
       { 'input-group': hasIcon },
-      { 'has-danger': error },
-      showError && { 'has-danger': error },
+      error && { 'has-danger': error },
       { focused: focused },
       { 'input-group-alternative': alternative },
       { 'has-label': label || $slots.label },
-      showError && { 'has-success': valid === true },
-      showError && { 'has-danger': valid === false },
+      { 'has-success': valid === true },
+      error && { 'has-danger': valid === false },
     ]"
   >
     <slot name="label">
@@ -30,8 +29,8 @@
       v-bind="$attrs"
       class="form-control"
       :class="[
-        showError && { 'is-valid': valid === true },
-        showError && { 'is-invalid': valid === false },
+        { 'is-valid': valid === true },
+        error && { 'is-invalid': valid === false },
         inputClasses,
       ]"
       @input="updateValue"
@@ -50,7 +49,7 @@
       <div
         class="text-danger invalid-feedback"
         style="display: block"
-        v-if="showError && error"
+        v-if="error"
       >
         {{ error }}
       </div>

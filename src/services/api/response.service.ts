@@ -1,3 +1,4 @@
+import { ValidationFailure } from '@/models';
 import * as _ from 'lodash';
 
 /**
@@ -7,11 +8,13 @@ import * as _ from 'lodash';
  */
 export class ServiceResponse<T> {
   data?: T;
+  validationFailures?: ValidationFailure[];
   error?: string;
 
-  constructor(data?: T, error?: string) {
+  constructor(data?: T, error?: string, validationFailures?: ValidationFailure[]) {
     this.data = data;
     this.error = error;
+    this.validationFailures = validationFailures;
   }
 
   hasData(): boolean {
@@ -19,6 +22,6 @@ export class ServiceResponse<T> {
   }
 
   hasError(): boolean {
-    return !_.isNil(this.error);
+    return !_.isNil(this.error || this.validationFailures);
   }
 }

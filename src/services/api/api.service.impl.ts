@@ -6,7 +6,7 @@ export class APIServiceImpl implements APIService {
   service: AxiosInstance;
   //Todo: Adding Config
   environment: string;
-  API_BASE_URL = "https://node-ts-jtc.herokuapp.com/";
+  API_BASE_URL = "http://localhost:8081/api";
   ENVIRONMENT = "develop";
   constructor() {
     this.service = axios.create({
