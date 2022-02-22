@@ -77,7 +77,7 @@ export default defineComponent({
     },
     async registerUser() {
       this.submitButtonState = ScreenState.LOADED;
-      if (this.validateUser()) {
+      if (!this.validateUser()) {
         return;
       }
       await this.register(this.user);
