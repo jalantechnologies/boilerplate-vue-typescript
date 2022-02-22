@@ -5,13 +5,14 @@
   "scripts": {
     "serve": "vue-cli-service serve & start-storybook -p 6006",
     "build": "vue-cli-service build",
+    "cy:run": "npx cypress run",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "build-storybook": "build-storybook"
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "sass-resources-loader": "^2.2.4",
+    "cypress": "^9.4.1",
     "vue": "^3.0.0",
     "vue-class-component": "^8.0.0-0"
   },
