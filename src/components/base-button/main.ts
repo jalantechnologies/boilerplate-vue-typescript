@@ -1,6 +1,6 @@
 import { LooseObject } from "@/types";
 import { Slot } from "@vue/test-utils/dist/types";
-import { computed, reactive, PropType, SetupContext, ComputedRef } from "vue";
+import { computed, PropType, SetupContext, ComputedRef } from "vue";
 
 interface BaseButtonProps {
   tag?: string;

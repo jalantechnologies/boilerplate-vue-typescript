@@ -72,7 +72,7 @@
           class="my-4"
           type="primary"
           @click="registerUser"
-          :disabled="state == 'LOADING'"
+          :disabled="submitButtonState == ScreenState.LOADING"
         >
           Create account
         </base-button>

@@ -34,6 +34,11 @@ export const getPasswordStrength = (value: string): string => {
   }
 }
 
+/**
+ * @param user 
+ * @returns 
+ */
+
 export const validationRules = (user: CreateAccountParam): LooseObject => {
   const rules = {
     user: {

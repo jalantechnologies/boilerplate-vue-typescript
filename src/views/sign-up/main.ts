@@ -1,13 +1,14 @@
-import { computed, defineComponent, ref } from "vue";
+import { defineComponent, ref } from "vue";
 import BaseInput from "@/components/base-input/index.vue";
 import BaseButton from "@/components/base-button/index.vue";
 import TheCard from "@/components/the-card/index.vue";
 import useVuelidate from "@vuelidate/core";
 import { CreateAccountParam } from "@/types/interface";
-import { RequestState, ScreenState } from "@/types/enums";
+import { ScreenState } from "@/types/enums";
 import { useStore } from "vuex";
 import { getErrorMessage, getPasswordStrength, validationRules } from "@/utils";
 import { ValidationFailure } from "@/models";
+import { ServiceResponse } from "@/services/api";
 
 export default defineComponent({
   name: "SignUp",
@@ -35,30 +36,28 @@ export default defineComponent({
     const passwordStrength = ref<string>("");
     const submitButtonState = ref<ScreenState>(ScreenState.DEFAULT);
 
-
-    const state = computed(() => store.getters['account/status']);
-    const error = computed(() => store.getters['account/error']);
-    const validationFailures = computed(() => store.getters['account/validationFailures']);
-    const register = (user: CreateAccountParam) => store.dispatch('account/register', user);
+    const register = (user: CreateAccountParam): Promise<ServiceResponse<Account>> => store.dispatch('account/register', user);
 
     const store = useStore()
     const v$ = useVuelidate()
 
     const registerUser = async () => {
-      console.log(user.value)
-      submitButtonState.value = ScreenState.LOADED;
+      submitButtonState.value = ScreenState.LOADED_NO_DATA;
       if (!validateUser()) {
         return;
       }
-      await register(user.value);
-      if (state.value == RequestState.FINISHED_SUCCESSFULLY) {
+
+      submitButtonState.value = ScreenState.LOADING;
+      const response = await register(user.value);
+      if (response.hasData()) {
         reponseMessage.value = 'Successfully Signed Up!';
       }
-      if (state.value == RequestState.FAILED) {
-        reponseMessage.value = error.value;
-        validationFailureErrors.value.password = getErrorMessage(validationFailures.value, 'password')
-        validationFailureErrors.value.username = getErrorMessage(validationFailures.value, 'username')
+      if (response.hasError() && response.error) {
+        reponseMessage.value = response.error.error;
+        validationFailureErrors.value.password = getErrorMessage(response.error.validationFailures, 'password')
+        validationFailureErrors.value.username = getErrorMessage(response.error.validationFailures, 'username')
       }
+      submitButtonState.value = ScreenState.LOADED;
       return true;
     }
 
@@ -88,18 +87,15 @@ export default defineComponent({
     }
 
     return {
-      error,
       passwordStrength,
       reponseMessage,
       register,
       registerUser,
       ScreenState,
-      state,
       submitButtonState,
       updateUser,
       user,
       v$,
-      validationFailures,
       validationFailureErrors,
       validateUser,
     };

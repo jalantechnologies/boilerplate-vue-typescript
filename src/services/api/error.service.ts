@@ -8,6 +8,7 @@ export class ServiceError {
 
   constructor(error: LooseObject) {
     this.validationFailures = [];
+    // Todo: Handle network error
     if (error.response.status == HTTP_STATUS_CODE.BAD_REQUEST || error.response.status == HTTP_STATUS_CODE.CONFLICT_REQUEST) {
       error.response?.data?.failures.forEach((element: LooseObject) => {
         this.validationFailures.push(new ValidationFailure(element))

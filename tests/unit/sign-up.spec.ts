@@ -28,7 +28,6 @@ describe("SignUp.vue", () => {
       },
       plugins: [Vuex],
     });
-    expect(wrapper.vm.validateUser()).toBe(false);
     expect(wrapper.vm.v$.user.confirmPassword.$invalid).toBe(true);
     expect(wrapper.vm.v$.user.password.$invalid).toBe(true);
     expect(wrapper.vm.v$.user.username.$invalid).toBe(true);
@@ -51,7 +50,6 @@ describe("SignUp.vue", () => {
       },
       plugins: [Vuex],
     });
-    expect(wrapper.vm.validateUser()).toBe(false);
     expect(wrapper.vm.v$.user.confirmPassword.$invalid).toBe(false);
     expect(wrapper.vm.v$.user.password.$invalid).toBe(false);
     expect(wrapper.vm.v$.user.username.$invalid).toBe(true);
@@ -74,7 +72,6 @@ describe("SignUp.vue", () => {
       },
       plugins: [Vuex],
     });
-    expect(wrapper.vm.validateUser()).toBe(false);
     expect(wrapper.vm.v$.user.confirmPassword.$invalid).toBe(true);
     expect(wrapper.vm.v$.user.password.$invalid).toBe(false);
     expect(wrapper.vm.v$.user.username.$invalid).toBe(false);
@@ -97,7 +94,6 @@ describe("SignUp.vue", () => {
       },
       plugins: [Vuex],
     });
-    expect(wrapper.vm.validateUser()).toBe(false);
     expect(wrapper.vm.v$.user.confirmPassword.$invalid).toBe(true);
     expect(wrapper.vm.v$.user.password.$invalid).toBe(true);
     expect(wrapper.vm.v$.user.username.$invalid).toBe(false);
@@ -120,7 +116,6 @@ describe("SignUp.vue", () => {
       },
       plugins: [Vuex],
     });
-    expect(wrapper.vm.validateUser()).toBe(true);
     expect(wrapper.vm.v$.user.confirmPassword.$invalid).toBe(false);
     expect(wrapper.vm.v$.user.password.$invalid).toBe(false);
     expect(wrapper.vm.v$.user.username.$invalid).toBe(false);
