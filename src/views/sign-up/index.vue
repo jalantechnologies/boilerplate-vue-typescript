@@ -20,7 +20,7 @@
           :errors="
             validationFailureErrors.username.length > 0
               ? validationFailureErrors.username
-              : v$.user.username.$errors
+              : v$.user.username.$errors.map((e) => e.$message)
           "
           @input="(e) => updateUser(e, 'username')"
           addon-left-icon="ni ni-email-83"
@@ -34,7 +34,7 @@
           :errors="
             validationFailureErrors.password.length > 0
               ? validationFailureErrors.password
-              : v$.user.password.$errors
+              : v$.user.password.$errors?.map((e) => e.$message)
           "
           @input="(e) => updateUser(e, 'password')"
           addon-left-icon="ni ni-lock-circle-open"
@@ -45,7 +45,7 @@
           type="password"
           placeholder="Confirm Password"
           :value="user.confirmPassword"
-          :errors="v$.user.confirmPassword.$errors"
+          :errors="v$.user.confirmPassword.$errors?.map((e) => e.$message)"
           @input="(e) => updateUser(e, 'confirmPassword')"
           addon-left-icon="ni ni-lock-circle-open"
         />

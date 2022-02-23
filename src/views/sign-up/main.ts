@@ -7,7 +7,6 @@ import { CreateAccountParam } from "@/types/interface";
 import { ScreenState } from "@/types/enums";
 import { useStore } from "vuex";
 import { getErrorMessage, getPasswordStrength, validationRules } from "@/utils";
-import { ValidationFailure } from "@/models";
 import { ServiceResponse } from "@/services/api";
 
 export default defineComponent({
@@ -25,8 +24,8 @@ export default defineComponent({
     });
 
     const validationFailureErrors = ref<{
-      username: ValidationFailure[],
-      password: ValidationFailure[],
+      username: string[],
+      password: string[],
     }>({
       username: [],
       password: [],

@@ -9,8 +9,8 @@ import zxcvbn from "zxcvbn";
  * @returns error message of type passed.
  */
 
-export const getErrorMessage = (validationFailures: ValidationFailure[], type: string): ValidationFailure[] => {
-  const validationFailure = validationFailures?.filter((element: ValidationFailure) => element.field == type);
+export const getErrorMessage = (validationFailures: ValidationFailure[], type: string): string[] => {
+  const validationFailure = validationFailures?.filter((element: ValidationFailure) => element.field == type)?.map((e) => e.message);
   return validationFailure;
 };
 

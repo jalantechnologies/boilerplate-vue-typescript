@@ -5,7 +5,7 @@ interface BaseInputProps {
   addonRightIcon?: string;
   addonLeftIcon?: string;
   alternative?: boolean;
-  errors?: { message: string, $message: string }[];
+  errors?: string[];
   inputClasses?: string;
   label?: string;
   labelClasses?: string;

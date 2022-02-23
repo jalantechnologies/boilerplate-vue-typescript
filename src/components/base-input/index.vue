@@ -53,7 +53,7 @@
     >
       <slot name="helpBlock">
         <div v-for="error of errors" :key="error.$uid">
-          {{ error.$message || error.message }}
+          {{ error }}
         </div>
       </slot>
     </div>
