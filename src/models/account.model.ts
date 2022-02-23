@@ -1,9 +1,9 @@
 export class Account {
-  username: string;
   id: string;
+  username: string;
 
   constructor(json: any) {
-    this.username = json.username;
     this.id = json.id;
+    this.username = json.username;
   }
 }

@@ -16,7 +16,7 @@ export const register = async (
     // Todo: route to login page router.push("/login");
     commit(REGISTER_SUCCESS, res.data);
   } else if (res.hasError()) {
-    commit(REGISTER_FAILURE, res);
+    commit(REGISTER_FAILURE, res.error);
   }
   return res;
 };

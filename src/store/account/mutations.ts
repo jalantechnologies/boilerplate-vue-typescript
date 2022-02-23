@@ -1,4 +1,5 @@
 import { Account, ValidationFailure } from "@/models";
+import { ServiceError } from "@/services/api";
 import { ScreenState } from "@/types";
 import { AccountStateType } from "./state";
 
@@ -11,11 +12,11 @@ const mutations = {
     state.account = account;
     state.status = ScreenState.LOADED;
   },
-  REGISTER_FAILURE(state: AccountStateType, { error, validationFailures }: { error?: string, validationFailures?: ValidationFailure[] }): void {
+  REGISTER_FAILURE(state: AccountStateType, error: ServiceError): void {
     state.isLoggedIn = false;
     state.status = ScreenState.ERROR;
-    state.error = error;
-    state.validationFailures = validationFailures?.map((Element: ValidationFailure) => new ValidationFailure(Element));
+    state.error = error.error;
+    state.validationFailures = error.validationFailures;
   },
 };
 export default mutations;

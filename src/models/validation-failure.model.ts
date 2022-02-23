@@ -1,6 +1,6 @@
-/*
-This is generic model, that can used to record the failure reponses in api service.  
-*/
+/** 
+ * This is generic model, that can used to record the failure reponses in api service. 
+ */
 export class ValidationFailure {
   field: string;
   message: string;
