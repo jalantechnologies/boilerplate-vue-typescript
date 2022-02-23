@@ -1,6 +1,5 @@
 import { ValidationFailure } from '@/models';
 import { HTTP_STATUS_CODE, LooseObject } from '@/types';
-import * as _ from 'lodash';
 
 export class ServiceError {
   error: string;

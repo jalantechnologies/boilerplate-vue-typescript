@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve & start-storybook -p 6006",
     "build": "vue-cli-service build",
     "cy:run": "npx cypress run",
     "test:unit": "vue-cli-service test:unit",
