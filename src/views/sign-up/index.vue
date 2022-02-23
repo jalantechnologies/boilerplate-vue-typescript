@@ -17,45 +17,39 @@
           type="text"
           placeholder="Email"
           :value="user.username"
-          :error="
-            validationFailureErrors.username ||
-            (submitButtonState != ScreenState.DEFAULT &&
-            v$.user.username.$invalid
-              ? 'Invalid email'
-              : '')
+          :errors="
+            validationFailureErrors.username.length > 0
+              ? validationFailureErrors.username
+              : v$.user.username.$errors
           "
           @input="(e) => updateUser(e, 'username')"
           addon-left-icon="ni ni-email-83"
         />
+
         <BaseInput
           alternative
           type="password"
           placeholder="Password"
           :value="user.password"
-          :error="
-            validationFailureErrors.password ||
-            (submitButtonState != ScreenState.DEFAULT &&
-            v$.user.password.$invalid
-              ? 'Invalid password'
-              : '')
+          :errors="
+            validationFailureErrors.password.length > 0
+              ? validationFailureErrors.password
+              : v$.user.password.$errors
           "
           @input="(e) => updateUser(e, 'password')"
           addon-left-icon="ni ni-lock-circle-open"
         />
+
         <BaseInput
           alternative
           type="password"
           placeholder="Confirm Password"
           :value="user.confirmPassword"
-          :error="
-            submitButtonState != ScreenState.DEFAULT &&
-            v$.user.confirmPassword.$invalid
-              ? 'Password doesn\'t match.'
-              : ''
-          "
+          :errors="v$.user.confirmPassword.$errors"
           @input="(e) => updateUser(e, 'confirmPassword')"
           addon-left-icon="ni ni-lock-circle-open"
         />
+
         <div
           class="text-muted align-self-start font-italic"
           v-if="passwordStrength"

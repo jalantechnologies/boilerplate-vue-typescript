@@ -4,10 +4,11 @@ import BaseInput from "@/components/base-input/index.vue";
 import BaseButton from "@/components/base-button/index.vue";
 import TheCard from "@/components/the-card/index.vue";
 import useVuelidate from "@vuelidate/core";
-import { required, email, minLength, sameAs } from "@vuelidate/validators";
-import { User } from "@/types/interface";
-import { ScreenState } from "@/types/enums";
+import { required, email, minLength, sameAs, helpers } from "@vuelidate/validators";
+import { CreateAccountParam } from "@/types/interface";
+import { RequestState, ScreenState } from "@/types/enums";
 import { mapActions, mapGetters } from "vuex";
+import { getErrorMessage } from "@/utils";
 import { ValidationFailure } from "@/models";
 
 export default defineComponent({
@@ -18,15 +19,20 @@ export default defineComponent({
     TheCard,
   },
   setup() {
-    const user = ref<User>({
+    const user = ref<CreateAccountParam>({
       username: "",
       password: "",
       confirmPassword: "",
     });
-    const validationFailureErrors = ref({
-      username: "",
-      password: "",
+
+    const validationFailureErrors = ref<{
+      username: ValidationFailure[],
+      password: ValidationFailure[],
+    }>({
+      username: [],
+      password: [],
     });
+
     const reponseMessage = ref<string>('');
     const passwordStrength = ref<string>("");
     const submitButtonState = ref<ScreenState>(ScreenState.DEFAULT);
@@ -46,8 +52,8 @@ export default defineComponent({
   methods: {
     ...mapActions("account", ["register"]),
     updateUser(value: string, id: string) {
-      this.validationFailureErrors.password = '';
-      this.validationFailureErrors.username = '';
+      this.validationFailureErrors.password = [];
+      this.validationFailureErrors.username = [];
       switch (id) {
         case "username":
           this.user.username = value;
@@ -81,13 +87,13 @@ export default defineComponent({
         return;
       }
       await this.register(this.user);
-      if (this.state == ScreenState.LOADED) {
+      if (this.state == RequestState.FINISHED_SUCCESSFULLY) {
         this.reponseMessage = 'Successfully Signed Up!';
       }
-      if (this.state == ScreenState.ERROR) {
+      if (this.state == RequestState.FAILED) {
         this.reponseMessage = this.error;
-        this.validationFailureErrors.password = this.validationFailures?.find((element: ValidationFailure) => element.field == 'password')?.message;
-        this.validationFailureErrors.username = this.validationFailures?.find((element: ValidationFailure) => element.field == 'username')?.message;
+        this.validationFailureErrors.password = getErrorMessage(this.validationFailures, 'password')
+        this.validationFailureErrors.username = getErrorMessage(this.validationFailures, 'username')
       }
       return true;
     },
@@ -102,12 +108,18 @@ export default defineComponent({
   validations() {
     return {
       user: {
-        username: { required, email },
-        password: { required, minLength: minLength(6) },
+        username: {
+          required: helpers.withMessage('Username field is required.', required),
+          email: helpers.withMessage('Please enter a valid email address.', email),
+        },
+        password: {
+          required: helpers.withMessage('Password field is required.', required),
+          minLength: helpers.withMessage('Password should be at least 6 characters long.', minLength(6))
+        },
         confirmPassword: {
-          required,
-          minLength: minLength(6),
-          sameAsPassword: sameAs(this.user.password),
+          required: helpers.withMessage('Confirm Password field is required.', required),
+          minLength: helpers.withMessage('Confirm Password should be at least 6 characters long.', minLength(6)),
+          sameAsPassword: helpers.withMessage('Confirm Password must be same as Password field.', sameAs(this.user.password)),
         },
       },
     };

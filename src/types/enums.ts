@@ -1,11 +1,3 @@
-export enum ScreenState {
-  DEFAULT = "DEFAULT",
-  ERROR = "ERROR",
-  LOADED = "LOADED",
-  LOADED_NO_DATA = "LOADED_NO_DATA",
-  LOADING = "LOADING",
-}
-
 export enum AlertType {
   ALERT_SUCCESS = "ALERT_SUCCESS",
   ALERT_ERROR = "ALERT_ERROR",
@@ -14,4 +6,19 @@ export enum AlertType {
 export enum HTTP_STATUS_CODE {
   BAD_REQUEST = 400,
   CONFLICT_REQUEST = 409
+}
+
+export enum ScreenState {
+  DEFAULT = "DEFAULT",
+  ERROR = "ERROR",
+  LOADED = "LOADED",
+  LOADED_NO_DATA = "LOADED_NO_DATA",
+  LOADING = "LOADING",
+}
+
+export enum RequestState {
+  DEFAULT = 'DEFAULT',
+  IN_PROGRESS = 'IN_PROGRESS',
+  FAILED = 'FAILED',
+  FINISHED_SUCCESSFULLY = 'FINISHED_SUCCESSFULLY'
 }

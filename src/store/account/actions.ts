@@ -1,13 +1,13 @@
 import { AccountService, AccountServiceImpl } from "@/services";
 import { ServiceResponse } from "@/services/api";
-import { User } from "@/types";
+import { CreateAccountParam } from "@/types";
 import { REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS } from "./types";
 import { Account } from "@/models";
 import { Commit } from "vuex";
 
 export const register = async (
   { commit }: { commit: Commit },
-  user: User
+  user: CreateAccountParam
 ): Promise<ServiceResponse<Account>> => {
   commit(REGISTER_REQUEST, user);
   const accountService: AccountService = new AccountServiceImpl();

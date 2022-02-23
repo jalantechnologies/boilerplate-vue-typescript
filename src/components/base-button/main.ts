@@ -1,3 +1,4 @@
+import { LooseObject } from "@/types";
 import { Slot } from "@vue/test-utils/dist/types";
 import { computed, reactive, PropType, SetupContext, ComputedRef } from "vue";
 
@@ -76,7 +77,7 @@ export default {
   },
   emits: ["click"],
   setup(props: BaseButtonProps, { emit, slots }: SetupContext): {
-    classes: ComputedRef<any>;
+    classes: ComputedRef<LooseObject>;
     handleClick: (evt: MouseEvent) => void;
     slots: Slot
   } {

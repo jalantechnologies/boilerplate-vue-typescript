@@ -1,10 +1,10 @@
 import { Account, ValidationFailure } from "@/models";
-import { ScreenState } from "@/types";
+import { RequestState } from "@/types";
 
 export type AccountStateType = {
   isLoggedIn: boolean;
   account: Account;
-  status: ScreenState;
+  status: RequestState;
   error?: string;
   validationFailures?: ValidationFailure[];
 };
@@ -12,11 +12,11 @@ export type AccountStateType = {
 const account = new Account({});
 
 const state: AccountStateType = account
-  ? { isLoggedIn: true, account, status: ScreenState.DEFAULT, error: '', validationFailures: [new ValidationFailure({})] }
+  ? { isLoggedIn: true, account, status: RequestState.DEFAULT, error: '', validationFailures: [new ValidationFailure({})] }
   : {
     isLoggedIn: false,
     account: new Account({}),
-    status: ScreenState.DEFAULT,
+    status: RequestState.DEFAULT,
     error: '',
     validationFailures: [new ValidationFailure({})]
   };

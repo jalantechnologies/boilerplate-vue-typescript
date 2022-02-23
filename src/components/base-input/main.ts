@@ -5,8 +5,7 @@ interface BaseInputProps {
   addonRightIcon?: string;
   addonLeftIcon?: string;
   alternative?: boolean;
-  error?: string;
-  showError?: boolean;
+  errors?: { message: string, $message: string }[];
   inputClasses?: string;
   label?: string;
   labelClasses?: string;
@@ -36,8 +35,8 @@ export default {
       type: String as PropType<BaseInputProps>,
       description: "Input label (text before input)",
     },
-    error: {
-      type: String as PropType<BaseInputProps>,
+    errors: {
+      type: Array as PropType<BaseInputProps>,
       description: "Input error (below input)",
     },
     labelClasses: {
@@ -59,10 +58,6 @@ export default {
     addonLeftIcon: {
       type: String,
       description: "Addont left icon",
-    },
-    showError: {
-      type: Boolean as PropType<BaseInputProps>,
-      description: "Show error message and indicator",
     },
     validationFailure: {
       type: ValidationFailure as PropType<BaseInputProps>

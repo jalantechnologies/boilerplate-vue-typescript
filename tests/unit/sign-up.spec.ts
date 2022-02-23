@@ -1,7 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
 import Vuex from 'vuex'
 import SignUp from "@/views/sign-up/index.vue";
-import { ScreenState, User } from "@/types";
+import { ScreenState, CreateAccountParam } from "@/types";
 import { ref } from "vue";
 import useVuelidate from "@vuelidate/core";
 
@@ -14,7 +14,7 @@ describe("SignUp.vue", () => {
   it("should not validate all fields are empty", async () => {
     const wrapper = shallowMount(SignUp, {
       setup() {
-        const user = ref<User>({
+        const user = ref<CreateAccountParam>({
           username: "",
           password: "",
           confirmPassword: "",
@@ -37,7 +37,7 @@ describe("SignUp.vue", () => {
   it("should not validate if email is not valid", async () => {
     const wrapper = shallowMount(SignUp, {
       setup() {
-        const user = ref<User>({
+        const user = ref<CreateAccountParam>({
           username: "test",
           password: "asdasd",
           confirmPassword: "asdasd",
@@ -60,7 +60,7 @@ describe("SignUp.vue", () => {
   it("should validate if password does not match", async () => {
     const wrapper = shallowMount(SignUp, {
       setup() {
-        const user = ref<User>({
+        const user = ref<CreateAccountParam>({
           username: "test@test.com",
           password: "asdasd",
           confirmPassword: "asdasda",
@@ -83,7 +83,7 @@ describe("SignUp.vue", () => {
   it("should validate if password length is less than 6", async () => {
     const wrapper = shallowMount(SignUp, {
       setup() {
-        const user = ref<User>({
+        const user = ref<CreateAccountParam>({
           username: "test@test.com",
           password: "asdas",
           confirmPassword: "asdas",
@@ -106,7 +106,7 @@ describe("SignUp.vue", () => {
   it("should validate if all fields are valid", async () => {
     const wrapper = shallowMount(SignUp, {
       setup() {
-        const user = ref<User>({
+        const user = ref<CreateAccountParam>({
           username: "test@test.com",
           password: "asdasd",
           confirmPassword: "asdasd",
