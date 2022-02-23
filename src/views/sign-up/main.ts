@@ -1,14 +1,12 @@
-import { defineComponent, ref } from "vue";
-import zxcvbn from 'zxcvbn';
+import { computed, defineComponent, ref } from "vue";
 import BaseInput from "@/components/base-input/index.vue";
 import BaseButton from "@/components/base-button/index.vue";
 import TheCard from "@/components/the-card/index.vue";
 import useVuelidate from "@vuelidate/core";
-import { required, email, minLength, sameAs, helpers } from "@vuelidate/validators";
 import { CreateAccountParam } from "@/types/interface";
 import { RequestState, ScreenState } from "@/types/enums";
-import { mapActions, mapGetters } from "vuex";
-import { getErrorMessage } from "@/utils";
+import { useStore } from "vuex";
+import { getErrorMessage, getPasswordStrength, validationRules } from "@/utils";
 import { ValidationFailure } from "@/models";
 
 export default defineComponent({
@@ -36,92 +34,77 @@ export default defineComponent({
     const reponseMessage = ref<string>('');
     const passwordStrength = ref<string>("");
     const submitButtonState = ref<ScreenState>(ScreenState.DEFAULT);
-    return {
-      passwordStrength,
-      reponseMessage,
-      user,
-      v$: useVuelidate(),
-      ScreenState,
-      submitButtonState,
-      validationFailureErrors,
-    };
-  },
-  computed: {
-    ...mapGetters("account", { state: "status", error: "error", validationFailures: "validationFailures" }),
-  },
-  methods: {
-    ...mapActions("account", ["register"]),
-    updateUser(value: string, id: string) {
-      this.validationFailureErrors.password = [];
-      this.validationFailureErrors.username = [];
-      switch (id) {
-        case "username":
-          this.user.username = value;
-          break;
-        case "password":
-          this.passwordStrength = this.getPasswordStrength(value);
-          this.user.password = value;
-          break;
-        case "confirmPassword":
-          this.user.confirmPassword = value;
-          break;
-      }
-    },
-    getPasswordStrength(value: string) {
-      switch (zxcvbn(value).score) {
-        case 0:
-          return 'weak';
-        case 1:
-          return 'weak';
-        case 2:
-          return 'medium';
-        case 3:
-          return 'medium';
-        case 4:
-          return 'strong';
-      }
-    },
-    async registerUser() {
-      this.submitButtonState = ScreenState.LOADED;
-      if (!this.validateUser()) {
+
+
+    const state = computed(() => store.getters['account/status']);
+    const error = computed(() => store.getters['account/error']);
+    const validationFailures = computed(() => store.getters['account/validationFailures']);
+    const register = (user: CreateAccountParam) => store.dispatch('account/register', user);
+
+    const store = useStore()
+    const v$ = useVuelidate()
+
+    const registerUser = async () => {
+      console.log(user.value)
+      submitButtonState.value = ScreenState.LOADED;
+      if (!validateUser()) {
         return;
       }
-      await this.register(this.user);
-      if (this.state == RequestState.FINISHED_SUCCESSFULLY) {
-        this.reponseMessage = 'Successfully Signed Up!';
+      await register(user.value);
+      if (state.value == RequestState.FINISHED_SUCCESSFULLY) {
+        reponseMessage.value = 'Successfully Signed Up!';
       }
-      if (this.state == RequestState.FAILED) {
-        this.reponseMessage = this.error;
-        this.validationFailureErrors.password = getErrorMessage(this.validationFailures, 'password')
-        this.validationFailureErrors.username = getErrorMessage(this.validationFailures, 'username')
+      if (state.value == RequestState.FAILED) {
+        reponseMessage.value = error.value;
+        validationFailureErrors.value.password = getErrorMessage(validationFailures.value, 'password')
+        validationFailureErrors.value.username = getErrorMessage(validationFailures.value, 'username')
       }
       return true;
-    },
-    validateUser(): boolean {
-      this.v$.$touch();
-      if (this.v$.$invalid) {
+    }
+
+    const updateUser = (value: string, id: string) => {
+      validationFailureErrors.value.password = [];
+      validationFailureErrors.value.username = [];
+      switch (id) {
+        case "username":
+          user.value.username = value;
+          break;
+        case "password":
+          passwordStrength.value = getPasswordStrength(value);
+          user.value.password = value;
+          break;
+        case "confirmPassword":
+          user.value.confirmPassword = value;
+          break;
+      }
+    }
+
+    const validateUser = (): boolean => {
+      v$.value.$touch();
+      if (v$.value.$invalid) {
         return false;
       }
       return true;
     }
+
+    return {
+      error,
+      passwordStrength,
+      reponseMessage,
+      register,
+      registerUser,
+      ScreenState,
+      state,
+      submitButtonState,
+      updateUser,
+      user,
+      v$,
+      validationFailures,
+      validationFailureErrors,
+      validateUser,
+    };
   },
   validations() {
-    return {
-      user: {
-        username: {
-          required: helpers.withMessage('Username field is required.', required),
-          email: helpers.withMessage('Please enter a valid email address.', email),
-        },
-        password: {
-          required: helpers.withMessage('Password field is required.', required),
-          minLength: helpers.withMessage('Password should be at least 6 characters long.', minLength(6))
-        },
-        confirmPassword: {
-          required: helpers.withMessage('Confirm Password field is required.', required),
-          minLength: helpers.withMessage('Confirm Password should be at least 6 characters long.', minLength(6)),
-          sameAsPassword: helpers.withMessage('Confirm Password must be same as Password field.', sameAs(this.user.password)),
-        },
-      },
-    };
+    return validationRules(this.user)
   },
 });

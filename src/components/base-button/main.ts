@@ -81,7 +81,6 @@ export default {
     handleClick: (evt: MouseEvent) => void;
     slots: Slot
   } {
-    props = reactive(props);
     const classes = computed(() => {
       return {
         "btn-block": props.block,
