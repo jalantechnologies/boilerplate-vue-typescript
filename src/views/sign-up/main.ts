@@ -52,7 +52,7 @@ export default defineComponent({
   methods: {
     ...mapActions("account", ["register"]),
     async registerUser(): Promise<boolean> {
-      this.submitButtonState = ScreenState.LOADING;
+      this.submitButtonState = ScreenState.LOADED_NO_DATA;
       this.v$.$touch();
       if (this.v$.$invalid) {
         return false;

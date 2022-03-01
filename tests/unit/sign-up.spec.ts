@@ -112,27 +112,4 @@ describe("Signup.vue", () => {
     expect(passwordInput.props().errors[0]).toBeUndefined();
     expect(confirmPasswordInput.props().errors[0]).toBeUndefined();
   });
-
-  it("should dispatch register action on button click.", async () => {
-    const wrapper = mount(SignUp, {
-      global: {
-        plugins: [store]
-      },
-      stubs: {
-        BaseButton: true,
-        BaseInput: true
-      },
-    });
-    wrapper.setData({
-      user: {
-        username: 'test@test.com',
-        password: 'asdasd',
-        confirmPassword: 'asdasd'
-      }
-    });
-
-    await wrapper.find("button").trigger("click")
-    wrapper.find("button").trigger("click")
-    expect(store.dispatch).toHaveBeenCalledWith('account/register', { "confirmPassword": "asdasd", "password": "asdasd", "username": "test@test.com" })
-  })
 })
