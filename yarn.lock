@@ -14167,7 +14167,7 @@ typedarray@^0.0.6:
 
 typescript@~4.1.5:
   version "4.1.6"
-  resolved "https://registry.npmjs.org/typescript/-/typescript-4.1.6.tgz"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.1.6.tgz#1becd85d77567c3c741172339e93ce2e69932138"
   integrity sha512-pxnwLxeb/Z5SP80JDRzVjh58KsM6jZHRAOtTpS7sXLS4ogXNKC9ANxHHZqLLeVHZN35jCtI4JdmLLbLiC1kBow==
 
 uglify-js@3.4.x:

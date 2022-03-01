@@ -1,123 +1,115 @@
-import { shallowMount } from "@vue/test-utils";
-import Vuex from 'vuex'
-import SignUp from "@/views/sign-up/index.vue";
-import { ScreenState, CreateAccountParam } from "@/types";
-import { ref } from "vue";
-import useVuelidate from "@vuelidate/core";
+import { mount } from "@vue/test-utils";
+import { createStore } from 'vuex';
+import SignUp from "../../src/views/sign-up/index.vue";
+import BaseInput from "../../src/components/base-input/index.vue";
+import account from "../../src/store/account"
 
-describe("SignUp.vue", () => {
-  it("renders message when component is created", () => {
-    const wrapper = shallowMount(SignUp);
-    expect(wrapper.vm.$options.name).toMatch("SignUp");
-  });
+describe("Signup.vue", () => {
+  const store = createStore({
+    modules: {
+      account: {
+        ...account,
+        namespaced: true,
+      }
+    }
+  })
+  store.dispatch = jest.fn()
 
-  it("should not validate all fields are empty", async () => {
-    const wrapper = shallowMount(SignUp, {
-      setup() {
-        const user = ref<CreateAccountParam>({
-          username: "",
-          password: "",
-          confirmPassword: "",
-        });
-        const state = ref<ScreenState>(ScreenState.DEFAULT);
-        return {
-          user,
-          state,
-          v$: useVuelidate(),
-        };
+  it("should throw a validation error if no input is provided.", async () => {
+    const wrapper = mount(SignUp, {
+      stubs: {
+        BaseButton: true,
+        BaseInput: true
       },
-      plugins: [Vuex],
     });
-    expect(wrapper.vm.v$.user.confirmPassword.$invalid).toBe(true);
-    expect(wrapper.vm.v$.user.password.$invalid).toBe(true);
-    expect(wrapper.vm.v$.user.username.$invalid).toBe(true);
+    await wrapper.find("button").trigger("click")
+    expect(wrapper.findAllComponents(BaseInput)).toHaveLength(3);
+    expect(wrapper.findAllComponents(BaseInput)[0].props().errors[0]).toBe('Username field is required.');
+    expect(wrapper.findAllComponents(BaseInput)[1].props().errors[0]).toBe('Password field is required.');
+    expect(wrapper.findAllComponents(BaseInput)[2].props().errors[0]).toBe('Confirm Password field is required.');
   });
 
-  it("should not validate if email is not valid", async () => {
-    const wrapper = shallowMount(SignUp, {
-      setup() {
-        const user = ref<CreateAccountParam>({
-          username: "test",
-          password: "asdasd",
-          confirmPassword: "asdasd",
-        });
-        const state = ref<ScreenState>(ScreenState.DEFAULT);
-        return {
-          user,
-          state,
-          v$: useVuelidate(),
-        };
+  it("should throw a validation error if invalid email type username is provided.", async () => {
+    const wrapper = mount(SignUp, {
+      stubs: {
+        BaseButton: true,
+        BaseInput: true
       },
-      plugins: [Vuex],
     });
-    expect(wrapper.vm.v$.user.confirmPassword.$invalid).toBe(false);
-    expect(wrapper.vm.v$.user.password.$invalid).toBe(false);
-    expect(wrapper.vm.v$.user.username.$invalid).toBe(true);
+    wrapper.vm.user = {
+      username: 'test@test',
+      password: 'asdasd',
+      confirmPassword: 'asdasd'
+    };
+    await wrapper.find("button").trigger("click")
+    expect(wrapper.findAllComponents(BaseInput)).toHaveLength(3);
+    expect(wrapper.findAllComponents(BaseInput)[0].props().errors[0]).toBe('Please enter a valid email address.');
+    expect(wrapper.findAllComponents(BaseInput)[1].props().errors[0]).toBeUndefined();
+    expect(wrapper.findAllComponents(BaseInput)[2].props().errors[0]).toBeUndefined();
   });
 
-  it("should validate if password does not match", async () => {
-    const wrapper = shallowMount(SignUp, {
-      setup() {
-        const user = ref<CreateAccountParam>({
-          username: "test@test.com",
-          password: "asdasd",
-          confirmPassword: "asdasda",
-        });
-        const state = ref<ScreenState>(ScreenState.DEFAULT);
-        return {
-          user,
-          state,
-          v$: useVuelidate(),
-        };
+  it("should throw a validation error if confirm password does not match.", async () => {
+    const wrapper = mount(SignUp, {
+      stubs: {
+        BaseButton: true,
+        BaseInput: true
       },
-      plugins: [Vuex],
     });
-    expect(wrapper.vm.v$.user.confirmPassword.$invalid).toBe(true);
-    expect(wrapper.vm.v$.user.password.$invalid).toBe(false);
-    expect(wrapper.vm.v$.user.username.$invalid).toBe(false);
+    wrapper.vm.user = {
+      username: 'test@test.com',
+      password: 'asdasd',
+      confirmPassword: 'asdadss'
+    };
+    await wrapper.find("button").trigger("click")
+    expect(wrapper.findAllComponents(BaseInput)).toHaveLength(3);
+    expect(wrapper.findAllComponents(BaseInput)[0].props().errors[0]).toBeUndefined();
+    expect(wrapper.findAllComponents(BaseInput)[1].props().errors[0]).toBeUndefined();
+    expect(wrapper.findAllComponents(BaseInput)[2].props().errors[0]).toBe('Confirm Password must be same as Password field.');
   });
 
-  it("should validate if password length is less than 6", async () => {
-    const wrapper = shallowMount(SignUp, {
-      setup() {
-        const user = ref<CreateAccountParam>({
-          username: "test@test.com",
-          password: "asdas",
-          confirmPassword: "asdas",
-        });
-        const state = ref<ScreenState>(ScreenState.DEFAULT);
-        return {
-          user,
-          state,
-          v$: useVuelidate(),
-        };
+  it("should not throw a validation error if valid input is provided.", async () => {
+    const wrapper = mount(SignUp, {
+      stubs: {
+        BaseButton: true,
+        BaseInput: true
       },
-      plugins: [Vuex],
     });
-    expect(wrapper.vm.v$.user.confirmPassword.$invalid).toBe(true);
-    expect(wrapper.vm.v$.user.password.$invalid).toBe(true);
-    expect(wrapper.vm.v$.user.username.$invalid).toBe(false);
+    wrapper.vm.user = {
+      username: 'test@test.com',
+      password: 'asdasd',
+      confirmPassword: 'asdasd'
+    };
+    expect(wrapper.findAllComponents(BaseInput)).toHaveLength(3);
+
+    const usernameInput = wrapper.findAllComponents(BaseInput)[0];
+    const passwordInput = wrapper.findAllComponents(BaseInput)[1];
+    const confirmPasswordInput = wrapper.findAllComponents(BaseInput)[2];
+
+    expect(usernameInput.props().errors[0]).toBeUndefined();
+    expect(passwordInput.props().errors[0]).toBeUndefined();
+    expect(confirmPasswordInput.props().errors[0]).toBeUndefined();
   });
 
-  it("should validate if all fields are valid", async () => {
-    const wrapper = shallowMount(SignUp, {
-      setup() {
-        const user = ref<CreateAccountParam>({
-          username: "test@test.com",
-          password: "asdasd",
-          confirmPassword: "asdasd",
-        });
-        const state = ref<ScreenState>(ScreenState.DEFAULT);
-        return {
-          user,
-          state,
-          v$: useVuelidate(),
-        };
+  it("should dispatch register action on button click.", async () => {
+    const wrapper = mount(SignUp, {
+      global: {
+        plugins: [store]
       },
-      plugins: [Vuex],
+      stubs: {
+        BaseButton: true,
+        BaseInput: true
+      },
     });
-    expect(wrapper.vm.v$.user.confirmPassword.$invalid).toBe(false);
-    expect(wrapper.vm.v$.user.password.$invalid).toBe(false);
-    expect(wrapper.vm.v$.user.username.$invalid).toBe(false);
-  });
-});
+    wrapper.setData({
+      user: {
+        username: 'test@test.com',
+        password: 'asdasd',
+        confirmPassword: 'asdasd'
+      }
+    });
+
+    await wrapper.find("button").trigger("click")
+    wrapper.find("button").trigger("click")
+    expect(store.dispatch).toHaveBeenCalledWith('account/register', { "confirmPassword": "asdasd", "password": "asdasd", "username": "test@test.com" })
+  })
+})

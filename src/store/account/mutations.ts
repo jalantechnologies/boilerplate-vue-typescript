@@ -8,6 +8,7 @@ const mutations = {
   },
   REGISTER_FAILURE(state: AccountStateType): void {
     state.isLoggedIn = false;
+    state.account = new Account({})
   },
 };
 export default mutations;
