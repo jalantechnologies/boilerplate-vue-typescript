@@ -1,13 +1,16 @@
-import { computed, PropType, ref, SetupContext } from "vue";
+import { ValidationFailure } from "../../models";
+import { computed, ComputedRef, PropType, Ref, ref, SetupContext } from "vue";
 
 interface BaseInputProps {
+  addonRightIcon?: string;
+  addonLeftIcon?: string;
+  alternative?: boolean;
+  errors?: string[];
+  inputClasses?: string;
+  label?: string;
+  labelClasses?: string;
   required?: boolean;
   valid?: boolean;
-  alternative?: boolean;
-  label?: string;
-  error?: string;
-  labelClasses?: string;
-  inputClasses?: string;
   value?: [string, number];
 }
 
@@ -32,8 +35,8 @@ export default {
       type: String as PropType<BaseInputProps>,
       description: "Input label (text before input)",
     },
-    error: {
-      type: String as PropType<BaseInputProps>,
+    errors: {
+      type: Array as PropType<BaseInputProps>,
       description: "Input error (below input)",
     },
     labelClasses: {
@@ -56,18 +59,27 @@ export default {
       type: String,
       description: "Addont left icon",
     },
+    validationFailure: {
+      type: ValidationFailure as PropType<BaseInputProps>
+    }
   },
-  setup(props: any, { emit }: SetupContext) {
+  setup(props: BaseInputProps, { emit }: SetupContext): {
+    focused: Ref<boolean>;
+    onFocus: (value: string) => void,
+    updateValue: (evt: { target: { value: string } }) => void,
+    onBlur: (value: string) => void,
+    hasIcon: ComputedRef<boolean>
+  } {
     let focused = ref<boolean>(false);
-    const updateValue = (evt: { target: { value: any } }) => {
+    const updateValue = (evt: { target: { value: string } }) => {
       const value = evt.target.value;
       emit("input", value);
     };
-    const onFocus = (value: any) => {
+    const onFocus = (value: string) => {
       focused = ref(true);
       emit("focus", value);
     };
-    const onBlur = (value: any) => {
+    const onBlur = (value: string) => {
       focused = ref(false);
       emit("blur", value);
     };
@@ -82,7 +94,6 @@ export default {
       onFocus,
       updateValue,
       onBlur,
-      props,
       hasIcon,
     };
   },

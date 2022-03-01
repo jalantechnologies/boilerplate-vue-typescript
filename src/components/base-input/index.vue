@@ -1,14 +1,14 @@
 <template>
   <div
-    class="form-group"
+    class="form-group d-flex"
     :class="[
       { 'input-group': hasIcon },
-      { 'has-danger': error },
+      errors?.length > 0 && { 'has-danger': true },
       { focused: focused },
       { 'input-group-alternative': alternative },
       { 'has-label': label || $slots.label },
       { 'has-success': valid === true },
-      { 'has-danger': valid === false },
+      errors?.length > 0 && { 'has-danger': valid === false },
     ]"
   >
     <slot name="label">
@@ -30,7 +30,7 @@
       class="form-control"
       :class="[
         { 'is-valid': valid === true },
-        { 'is-invalid': valid === false },
+        errors?.length > 0 && { 'is-invalid': valid === false },
         inputClasses,
       ]"
       @input="updateValue"
@@ -45,15 +45,18 @@
       </span>
     </div>
     <slot name="infoBlock"></slot>
-    <slot name="helpBlock">
-      <div
-        class="text-danger invalid-feedback"
-        style="display: block"
-        v-if="error"
-      >
-        {{ error }}
-      </div>
-    </slot>
+    <div
+      class="text-danger invalid-feedback"
+      style="display: block"
+      v-if="errors?.length > 0"
+      :class="{ 'm-2': hasIcon }"
+    >
+      <slot name="helpBlock">
+        <div v-for="error of errors" :key="error.$uid">
+          {{ error }}
+        </div>
+      </slot>
+    </div>
   </div>
 </template>
 <script src="./main.ts" lang="ts"/>

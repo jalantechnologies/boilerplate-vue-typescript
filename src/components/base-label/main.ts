@@ -1,3 +1,5 @@
-import { Vue } from "vue-class-component";
+import { defineComponent } from "vue";
 
-export default class BaseLabel extends Vue {}
+export default defineComponent({
+  name: "BaseLabel",
+})

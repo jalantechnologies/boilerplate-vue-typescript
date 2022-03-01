@@ -1,4 +1,6 @@
-import { computed, reactive, PropType, SetupContext } from "vue";
+import { LooseObject } from "@/types";
+import { Slot } from "@vue/test-utils/dist/types";
+import { computed, PropType, SetupContext, ComputedRef } from "vue";
 
 interface BaseButtonProps {
   tag?: string;
@@ -74,8 +76,11 @@ export default {
     },
   },
   emits: ["click"],
-  setup(props: BaseButtonProps, { emit, slots }: SetupContext) {
-    props = reactive(props);
+  setup(props: BaseButtonProps, { emit, slots }: SetupContext): {
+    classes: ComputedRef<LooseObject>;
+    handleClick: (evt: MouseEvent) => void;
+    slots: Slot
+  } {
     const classes = computed(() => {
       return {
         "btn-block": props.block,
