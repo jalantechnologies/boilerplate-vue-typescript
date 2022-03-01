@@ -33,20 +33,6 @@ describe("Store/action", () => {
   })
 })
 
-describe("Store/mutators", () => {
-  it("should return correct values", async () => {
-    const state = {
-      isLoggedIn: true,
-      account: { username: "test@test.com", id: "1" }
-    }
-    const isLoggedIn = account.getters.isLoggedIn(state)
-    const accountRes = account.getters.account(state)
-    expect(isLoggedIn).toBe(true);
-    expect(accountRes.username).toBe("test@test.com");
-    expect(accountRes.id).toBe("1");
-  })
-})
-
 describe("Store/getter", () => {
   it("should return correct values", async () => {
     const state = {

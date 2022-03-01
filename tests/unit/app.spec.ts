@@ -9,7 +9,15 @@ import { routes } from "../../src/router";
 
 describe("App.vue", () => {
   it("should mount component", () => {
-    const wrapper = shallowMount(App);
+    const router = createRouter({
+      history: createMemoryHistory(),
+      routes,
+    });
+    const wrapper = shallowMount(App, {
+      global: {
+        plugins: [router],
+      },
+    });
     expect(wrapper.exists()).toBeTruthy();
   });
 

@@ -2,13 +2,23 @@ import { mount } from "@vue/test-utils";
 import { createStore } from 'vuex';
 import SignUp from "../../src/views/sign-up/index.vue";
 import BaseInput from "../../src/components/base-input/index.vue";
-import account from "../../src/store/account"
+import BaseButton from "../../src/components/base-button/index.vue";
+import { createMemoryHistory, createRouter } from "vue-router";
+import { routes } from "../../src/router";
 
 describe("Signup.vue", () => {
+
+  const router = createRouter({
+    history: createMemoryHistory(),
+    routes,
+  });
+
+  const actions = { register: jest.fn() }
+
   const store = createStore({
     modules: {
       account: {
-        ...account,
+        actions: actions,
         namespaced: true,
       }
     }
@@ -21,6 +31,10 @@ describe("Signup.vue", () => {
         BaseButton: true,
         BaseInput: true
       },
+      global: {
+        plugins: [router],
+      },
+
     });
     await wrapper.find("button").trigger("click")
     expect(wrapper.findAllComponents(BaseInput)).toHaveLength(3);
@@ -34,6 +48,9 @@ describe("Signup.vue", () => {
       stubs: {
         BaseButton: true,
         BaseInput: true
+      },
+      global: {
+        plugins: [router],
       },
     });
     wrapper.vm.user = {
@@ -54,6 +71,9 @@ describe("Signup.vue", () => {
         BaseButton: true,
         BaseInput: true
       },
+      global: {
+        plugins: [router],
+      },
     });
     wrapper.vm.user = {
       username: 'test@test.com',
@@ -72,6 +92,9 @@ describe("Signup.vue", () => {
       stubs: {
         BaseButton: true,
         BaseInput: true
+      },
+      global: {
+        plugins: [router],
       },
     });
     wrapper.vm.user = {

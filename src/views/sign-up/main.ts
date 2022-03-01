@@ -47,17 +47,16 @@ export default defineComponent({
     }
   },
   computed: {
-    ...mapGetters("account", ["validationFailures", "state"]),
+    ...mapGetters("account", ["account", "isLoggedIn"]),
   },
   methods: {
     ...mapActions("account", ["register"]),
     async registerUser(): Promise<boolean> {
-      this.submitButtonState = ScreenState.LOADED_NO_DATA;
+      this.submitButtonState = ScreenState.LOADING;
       this.v$.$touch();
       if (this.v$.$invalid) {
         return false;
       }
-      this.reponseMessage = "asas"
       this.submitButtonState = ScreenState.LOADING;
 
       const response = await this.register(this.user);
